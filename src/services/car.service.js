@@ -10,9 +10,6 @@ const { parse } = require('fast-csv');
  * @returns {Promise<Car>}
  */
 const createProvider = async (body, files) => {
-  if (files.length <= 0 || !body.name) {
-    return;
-  }
   const data = await readCSV(files[0].buffer);
   const allowedHeaders = ['uuid', 'vin', 'make', 'model', 'mileage', 'year', 'price', 'zip', 'create date', 'update date'];
   const result = [];
@@ -44,7 +41,6 @@ const createProvider = async (body, files) => {
 const readCSV = (file) => {
   return new Promise((resolve, reject) => {
     const data = [];
-    let headers = [];
     const stream = parse({ headers: true })
       .on('error', (error) => reject(error))
       .on('data', (row) => data.push(row))

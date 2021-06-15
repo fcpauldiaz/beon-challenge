@@ -4,6 +4,9 @@ const catchAsync = require('../utils/catchAsync');
 const { carService } = require('../services');
 
 const createCarProvider = catchAsync(async (req, res) => {
+  if (!req.files || req.files.length <= 0) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'No input file found');
+  }
   const provider = await carService.createProvider(req.body, req.files);
   res.status(httpStatus.CREATED).send(provider);
 });
